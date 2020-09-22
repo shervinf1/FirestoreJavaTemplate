@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "133201674096",
+    "firebase_url": "https://firestorejavatemplate.firebaseio.com",
+    "project_id": "firestorejavatemplate",
+    "storage_bucket": "firestorejavatemplate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133201674096:android:6c70055e42fc59391c19b5",
+        "android_client_info": {
+          "package_name": "com.shervinf.firestorejavatemplate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "133201674096-26hgtoscg59bqmp8kp02v9qj3ppvutgr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPNgQrwdccDzjAJLfcwckHhK0Jnh1sjBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "133201674096-26hgtoscg59bqmp8kp02v9qj3ppvutgr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
