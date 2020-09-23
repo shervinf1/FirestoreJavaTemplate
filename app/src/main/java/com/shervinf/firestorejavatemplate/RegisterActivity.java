@@ -40,19 +40,27 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        //Hiding the support action bar to setup our own toolbar.
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        //Defining memeber variables with their pertaining variable in their layout file.
         etName = findViewById(R.id.editTextPersonName);
         actvEmail = findViewById(R.id.actvEmail);
         etPassword =findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         passwordEditorListener();
+        //Calling method to displa toolbar and set icon for returning to previous activity.
         toolbarSetup();
+        //Getting firebase authentication instance
         fAuth = FirebaseAuth.getInstance();
     }
 
+
+
+    /*
+    *
+    * */
     private void passwordEditorListener(){
-        //Keyboard Sign In action
         etConfirmPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -65,7 +73,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
+    /*
+     *Setting up the toolbar for the activity to have a back button to finish current activity and send user to previous activity
+     * */
     private void toolbarSetup(){
         Toolbar mToolbar = findViewById(R.id.registerToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -81,16 +91,21 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
-    public void register(View v)
-    {
+    /*
+     *Method that is called when the register button is clicked.
+     * */
+    public void register(View v) {
+        //Method that is called when the register button is called.
         attemptRegistration();
     }
 
 
 
 
-
+    /*
+     *Method that used for verifying that what the user entered is filled in and correct
+     * and attempts actual registration after inputs are invalid.
+     * */
     private void attemptRegistration() {
         //Reset any errors cause by the user in the form
         actvEmail.setError(null);
@@ -103,28 +118,32 @@ public class RegisterActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        //Verifying if the name edittext is empty or not.
         if (TextUtils.isEmpty(name)) {
             etName.setError(getString(R.string.error_name_field_required));
             focusView = etName;
             cancel = true;
         }
+        //Verifting if password is not empty and valid.
         if(TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             etPassword.setError(getString(R.string.error_invalid_password));
             focusView = etPassword;
             cancel = true;
         }
-
+        //Verifying if email is empty.
         if (TextUtils.isEmpty(email)) {
             actvEmail.setError(getString(R.string.error_field_required));
             focusView = actvEmail;
             cancel = true;
-        }
+        }//Verifying if email entered is valid or not.
         else if(!isEmailValid(email)) {
             actvEmail.setError(getString(R.string.error_invalid_email));
             focusView = actvEmail;
             cancel = true;
         }
 
+        /*If statement to see if there was an error when creating account and if so request focus
+        on whichever edit text was invalid or empty.*/
         if(cancel) {
             //There was ana error do not attempt login and focus the first form field with an error
             focusView.requestFocus();
@@ -137,14 +156,19 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
+    /*
+     *Method that returns true or false depending on if the email contains am '@' symbol.
+     * */
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
 
 
 
-
+    /*
+     *Method that returns true or false depending on if the password contains more than  6
+     * characters and if the main password and confirm password are equal.
+     * */
     private boolean isPasswordValid(String password) {
         String confirmPassword = etConfirmPassword.getText().toString();
         return confirmPassword.equals(password) && password.length() > 6;
@@ -152,7 +176,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
+    /*
+     *Method that uses the email and password that was validated from the user
+     * and calls the createUserWithEmailAndPassword from firebase auth and when completed it will
+     * send the user to the MainActivity.
+     * */
     private void createFirebaseUser() {
         String email = actvEmail.getText().toString();
         String password = etConfirmPassword.getText().toString();
@@ -168,6 +196,8 @@ public class RegisterActivity extends AppCompatActivity {
                     showErrorDialog("Registration attempt failed");
                 }
                 else {
+                    //Calling createdFirebaseUser() in order to add the name, timestamp and userID
+                    // to the pertaining user document.
                     createdFirebaseUser();
                     finish();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
@@ -191,7 +221,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
+    /*
+     *After the user has been created and added in firestore this method will be called which
+     * basically user a UserPOJO that I have created to add the user name, UserID and time stamp
+     * for when user was created to the user document.
+     * */
     private void createdFirebaseUser(){
         Log.d("FirestoreJavaTemplate","User Created");
         Toast.makeText(RegisterActivity.this,R.string.success_register, Toast.LENGTH_SHORT).show();
